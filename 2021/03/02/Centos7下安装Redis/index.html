@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		
+<title>Centos7下安装Redis-小北</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="shortcut icon" type="image/x-icon" href="/image/favicon.ico">
+
+
+<meta name="keywords" content="Liunx,Centos,Redis,">
+<meta name="description" content="Centos7下安装Redis">
+
+
+<script src="/js/jquery.min.js"></script>
+
+
+	<meta name="generator" content="Hexo 5.4.0"></head>
+
+	<body>
+		
+<link rel="stylesheet" href="/css/page.css">
+
+
+<link rel="stylesheet" href="/css/page_cente.css">
+
+
+<link rel="stylesheet" href="/css/atom-one-dark.css">
+
+
+<link rel="stylesheet" href="/css/header.css">
+
+	<div class="header">
+		<div class="header-top">
+			<div class="h-left">
+				<a href="/">
+					<img src="/image/logo.png" alt="Quiet">
+				</a>
+			</div>
+			<div class="h-right">
+				<ul>
+					
+						
+								<li>
+									<a href="/">
+										首页
+									</a>
+									<span class="dot"></span>
+								</li>
+								
+									
+						
+								<li>
+									<a href="/archives">
+										档案
+									</a>
+									<span class="dot"></span>
+								</li>
+								
+									
+						
+								<li>
+									<a href="/categories">
+										分类
+									</a>
+									<span class="dot"></span>
+								</li>
+								
+									
+						
+								<li>
+									<a href="/tags">
+										标签
+									</a>
+									<span class="dot"></span>
+								</li>
+								
+									
+						
+								<li>
+									<a href="/links">
+										友情连接
+									</a>
+									<span class="dot"></span>
+								</li>
+								
+									
+						
+								<li>
+									<a target="_blank" rel="noopener" href="https://52xiaobei.cn/resume/">
+										简历
+									</a>
+									<span class="dot"></span>
+								</li>
+								
+									
+						
+								<li>
+									<a href="/about">
+										关于
+									</a>
+									<span class="dot"></span>
+								</li>
+								
+									
+				</ul>
+			</div>
+			<div class="h-right-close">
+				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+					<path fill="none" d="M0 0h24v24H0z" />
+					<path d="M3 4h18v2H3V4zm0 7h18v2H3v-2zm0 7h18v2H3v-2z" fill="rgba(68,68,68,1)" />
+				</svg>
+			</div>
+		</div>
+	</div>
+	<div class="sidebar">
+    <div class="topo">
+        <h2>XiaoBei</h2>
+    </div>
+    <ul>
+        
+        <li>
+            <a href="/">首页</a>
+        </li>
+        
+        <li>
+            <a href="/archives">档案</a>
+        </li>
+        
+        <li>
+            <a href="/categories">分类</a>
+        </li>
+        
+        <li>
+            <a href="/tags">标签</a>
+        </li>
+        
+        <li>
+            <a href="/links">友情连接</a>
+        </li>
+        
+        <li>
+            <a target="_blank" rel="noopener" href="https://52xiaobei.cn/resume/">简历</a>
+        </li>
+        
+        <li>
+            <a href="/about">关于</a>
+        </li>
+        
+    </ul>
+    <div class="my_foot">
+        
+        <a target="_blank" rel="noopener" href="https://github.com/LaoJiuGua">
+            <img src="https://cdn.jsdelivr.net/gh/duogongneng/MyBlogImg/imggithub.png" alt="Quiet主题">
+        </a>
+        
+    </div>
+</div>
+<div class='shelter'
+    style='cursor: pointer;display: none; position: fixed;left: 0;top: 0; right: 0;bottom: 0;background-color: #333;opacity:0.5;z-index: 108;'>
+</div>
+<style>
+    .sidebar {
+        width: 0;
+        height: 100%;
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        background: #fff;
+        z-index: 999;
+        text-align: center;
+        box-shadow: -6px 0 20px rgba(98, 94, 94, .815)
+    }
+
+    .topo {
+        width: 100%;
+        height: 200px;
+        background: url(https://api.ixiaowai.cn/gqapi/gqapi.php) no-repeat;
+        background-size: 100% 100%;
+        position: relative;
+        display: flex;
+        align-items: flex-end
+    }
+
+    .topo h2 {
+        color: #fff;
+        z-index: 1;
+        position: relative;
+        margin: 0 0 10px 10px;
+        font-size: 1.2em;
+        box-sizing: border-box
+    }
+
+    .topo:before {
+        content: '';
+        background-image: url(/image/pattern.png);
+        background-repeat: repeat;
+        height: 100%;
+        left: 0;
+        position: absolute;
+        top: 0;
+        width: 100%;
+        z-index: 1
+    }
+
+    .sidebar ul {
+        width: 100%;
+        margin-top: 50px
+    }
+
+    .sidebar ul li {
+        height: 50px;
+        list-style: none;
+        font-size: 1.2em;
+        text-align: right;
+        margin-right: 10px
+    }
+
+    .sidebar ul li a {
+        display: grid;
+        color: #5d606a;
+        text-overflow: ellipsis;
+        width: 100%;
+        text-decoration: none
+    }
+
+    .my_foot {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+        position: absolute;
+        bottom: 0
+    }
+
+    .my_foot a {
+        text-decoration: none;
+        margin-right: 10px;
+        display: inline-block
+    }
+
+    .my_foot a img {
+        width: 30px;
+        height: 30px
+    }
+</style>
+
+<script>
+    $(function () { $('.h-right-close>svg').click(function () { $('.sidebar').animate({ width: "66%" }, 500); $('.shelter').fadeIn("slow") }); $('.shelter').click(function (e) { $('.sidebar').animate({ width: "0" }, 500); $('.shelter').fadeOut("slow") }) })
+</script>
+		<script>
+			$(function () { $(window).scroll(function () { if ($(document).scrollTop() > 100) { $(".header-top").removeClass("header-move2"); $('.header-top').addClass('header-move1') } else { $(".header-top").removeClass("header-move1"); $('.header-top').addClass('header-move2') } }) });
+		</script>
+<div class="header-bg bg-content-img">
+    <div class="bg-content">
+        <ul class="tag">
+            
+            
+            <li><a href="/tags/Liunx">Liunx</a></li>
+            
+            <li><a href="/tags/Centos">Centos</a></li>
+            
+            <li><a href="/tags/Redis">Redis</a></li>
+            
+            
+        </ul>
+        <h1>Centos7下安装Redis</h1>
+        <div class="article-info">
+            <div class="article-author">
+                
+                <svg t="1604839279282" class="icon" viewBox="0 0 1024 1024" version="1.1"
+                    xmlns="http://www.w3.org/2000/svg" p-id="2901" width="20" height="20">
+                    <path
+                        d="M513 956.3c-247.7 0-448-200.3-448-448S265.3 66.2 513 66.2s448 200.3 448 448-200.3 442.1-448 442.1z m0-830.9c-212.2 0-388.8 170.7-388.8 388.8C124.2 726.3 294.9 903 513 903c212.2 0 388.8-170.7 388.8-388.8S725.2 125.4 513 125.4z m0 430.2c-94.2 0-170.7-76.5-170.7-170.7S418.8 207.8 513 207.8s170.7 76.5 170.7 170.7S607.2 555.6 513 555.6z m0-289.1c-64.6 0-112 52.8-112 112s47.4 117.9 112 117.9 112-52.8 112-112-47.4-117.9-112-117.9z m0 689.8c-135.7 0-259-58.7-341.9-158.9l-11.8-17.8 11.8-17.8c76.5-117.9 206.2-188.5 347.8-188.5 135.7 0 265 64.6 341.9 182.6l11.8 17.8-11.8 17.8C778 897.1 648.7 956.3 513 956.3zM230.3 773.2C300.9 849.7 406.9 897 513 897c112 0 218.1-47.4 288.6-129.8-70.5-88.2-170.7-135.6-282.7-135.6s-218.1 53.3-288.6 141.6z"
+                        p-id="2902" fill="#ffffff"></path>
+                </svg>
+                
+                <span> <a href="">XiaoBei</a></span>
+                <p>2021-03-02 17:17:26</p>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="article-content">
+    <div id="article" class="content">
+        <h2 id="一、安装redis"><a href="#一、安装redis" class="headerlink" title="一、安装redis"></a>一、安装redis</h2><h3 id="第一步：下载redis安装包"><a href="#第一步：下载redis安装包" class="headerlink" title="第一步：下载redis安装包"></a>第一步：下载redis安装包</h3><figure class="highlight awk"><table><tr><td class="code"><pre><code class="hljs awk">wget http:<span class="hljs-regexp">//</span>download.redis.io<span class="hljs-regexp">/releases/</span>redis-<span class="hljs-number">4.0</span>.<span class="hljs-number">6</span>.tar.<br></code></pre></td></tr></table></figure>
+
+<h3 id=""><a href="#" class="headerlink" title=""></a></h3><h3 id="第二步：解压压缩包"><a href="#第二步：解压压缩包" class="headerlink" title="第二步：解压压缩包"></a>第二步：解压压缩包</h3><figure class="highlight apache"><table><tr><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">tar</span> -zxvf redis-<span class="hljs-number">4</span>.<span class="hljs-number">0</span>.<span class="hljs-number">6</span>.tar.gz<br><span class="hljs-comment"># 遇到选择,输入y即可</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="-1"><a href="#-1" class="headerlink" title=""></a></h3><h3 id="第四步：跳转到redis解压目录下"><a href="#第四步：跳转到redis解压目录下" class="headerlink" title="第四步：跳转到redis解压目录下"></a>第四步：跳转到redis解压目录下</h3><figure class="highlight apache"><table><tr><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">cd</span> redis-<span class="hljs-number">4</span>.<span class="hljs-number">0</span>.<span class="hljs-number">6</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="-2"><a href="#-2" class="headerlink" title=""></a></h3><h3 id="第五步：编译安装"><a href="#第五步：编译安装" class="headerlink" title="第五步：编译安装"></a>第五步：编译安装</h3><figure class="highlight routeros"><table><tr><td class="code"><pre><code class="hljs routeros">make <span class="hljs-attribute">MALLOC</span>=libc<br></code></pre></td></tr></table></figure>
+
+<p>将/usr/local/redis-4.0.6/src目录下的文件加到/usr/local/bin目录</p>
+<figure class="highlight vim"><table><tr><td class="code"><pre><code class="hljs vim"><span class="hljs-keyword">cd</span> src &amp;&amp; <span class="hljs-keyword">make</span> install<br></code></pre></td></tr></table></figure>
+
+<h2 id="二、启动redis的三种方式"><a href="#二、启动redis的三种方式" class="headerlink" title="二、启动redis的三种方式"></a>二、启动redis的三种方式</h2><p>先切换到redis src目录下</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cd</span> src <br></code></pre></td></tr></table></figure>
+
+<h3 id="-3"><a href="#-3" class="headerlink" title=""></a></h3><h3 id="1、直接启动redis"><a href="#1、直接启动redis" class="headerlink" title="1、直接启动redis"></a>1、直接启动redis</h3><figure class="highlight axapta"><table><tr><td class="code"><pre><code class="hljs axapta">./redis-<span class="hljs-keyword">server</span><br></code></pre></td></tr></table></figure>
+
+<p>redis启动成功，但是这种启动方式需要一直打开窗口，不能进行其他操作，不太方便。</p>
+<p>按 ctrl + c可以关闭窗口。</p>
+<h3 id="2、以后台进程方式启动redis"><a href="#2、以后台进程方式启动redis" class="headerlink" title="2、以后台进程方式启动redis"></a>2、以后台进程方式启动redis</h3><p>第一步：修改redis.conf文件</p>
+<p>将</p>
+<figure class="highlight nginx"><table><tr><td class="code"><pre><code class="hljs nginx"><span class="hljs-attribute">daemonize</span> <span class="hljs-literal">no</span><br></code></pre></td></tr></table></figure>
+
+<p>修改为</p>
+<figure class="highlight nginx"><table><tr><td class="code"><pre><code class="hljs nginx"><span class="hljs-attribute">daemonize</span> <span class="hljs-literal">yes</span><br></code></pre></td></tr></table></figure>
+
+<p>第二步：指定redis.conf文件启动</p>
+<figure class="highlight awk"><table><tr><td class="code"><pre><code class="hljs awk">.<span class="hljs-regexp">/redis-server /u</span>sr<span class="hljs-regexp">/local/</span>redis-<span class="hljs-number">4.0</span>.<span class="hljs-number">6</span>/redis.conf <br></code></pre></td></tr></table></figure>
+
+<p>第三步：关闭redis进程</p>
+<p>首先使用ps -aux | grep redis查看redis进程</p>
+<figure class="highlight tap"><table><tr><td class="code"><pre><code class="hljs tap">命令:ps -aux | grep redis=========================<br>root    <span class="hljs-number"> 18714 </span> 0.0  0.1<span class="hljs-number"> 141752 </span><span class="hljs-number"> 2008 </span>?        Ssl  13:07   0:00 ./redis-server 127.0.0.1:6379<br>root    <span class="hljs-number"> 18719 </span> 0.0  0.0<span class="hljs-number"> 112644 </span> <span class="hljs-number"> 968 </span>pts/0    R+   13:09   0:00 grep --color=auto redis<br></code></pre></td></tr></table></figure>
+
+<p>使用kill命令杀死进程</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">命令:<span class="hljs-built_in">kill</span> 18714<br></code></pre></td></tr></table></figure>
+
+<h3 id="3、设置redis开机自启动"><a href="#3、设置redis开机自启动" class="headerlink" title="3、设置redis开机自启动"></a>3、设置redis开机自启动</h3><p>1、在/etc目录下新建redis目录</p>
+<figure class="highlight arduino"><table><tr><td class="code"><pre><code class="hljs arduino"><span class="hljs-built_in">mkdir</span> redis<br></code></pre></td></tr></table></figure>
+
+<p>2、将/usr/local/redis-4.0.6/redis.conf 文件复制一份到/etc/redis目录下，并命名为6379.conf　　</p>
+<figure class="highlight awk"><table><tr><td class="code"><pre><code class="hljs awk">cp <span class="hljs-regexp">/usr/</span>local<span class="hljs-regexp">/redis-4.0.6/</span>redis.conf <span class="hljs-regexp">/etc/</span>redis/<span class="hljs-number">6379</span>.conf<br></code></pre></td></tr></table></figure>
+
+<p>3、将redis的启动脚本复制一份放到/etc/init.d目录下</p>
+<figure class="highlight awk"><table><tr><td class="code"><pre><code class="hljs awk">cp <span class="hljs-regexp">/usr/</span>local<span class="hljs-regexp">/redis-4.0.6/u</span>tils<span class="hljs-regexp">/redis_init_script /</span>etc<span class="hljs-regexp">/init.d/</span>redisd<br></code></pre></td></tr></table></figure>
+
+<p>4、设置redis开机自启动</p>
+<p>先切换到/etc/init.d目录下</p>
+<p>然后执行自启命令</p>
+<figure class="highlight applescript"><table><tr><td class="code"><pre><code class="hljs applescript">chkconfig redisd <span class="hljs-keyword">on</span><br>service redisd <span class="hljs-keyword">does</span> <span class="hljs-keyword">not</span> support chkconfig　<br></code></pre></td></tr></table></figure>
+
+<p> 如果返回的是： <strong>service redisd does not support chkconfig</strong>　</p>
+<p>看结果是redisd不支持chkconfig</p>
+<p>解决方法：</p>
+<p>使用vim编辑redisd文件，在第一行加入如下两行注释，保存退出</p>
+<figure class="highlight vala"><table><tr><td class="code"><pre><code class="hljs vala"><span class="hljs-meta"># chkconfig:   2345 90 10</span><br><span class="hljs-meta"># description:  Redis is a persistent key-value database</span><br></code></pre></td></tr></table></figure>
+
+<p>注释的意思是，redis服务必须在运行级2，3，4，5下被启动或关闭，启动的优先级是90，关闭的优先级是10。</p>
+<p><img src="https://s3.ax1x.com/2021/03/02/6ks52n.png" alt="6ks52n.png"></p>
+<p>再次执行开机自启命令，成功</p>
+<figure class="highlight nginx"><table><tr><td class="code"><pre><code class="hljs nginx"><span class="hljs-attribute">chkconfig</span> redisd <span class="hljs-literal">on</span><br></code></pre></td></tr></table></figure>
+
+<p>现在可以直接已服务的形式启动和关闭redis了</p>
+<p>启动：</p>
+<figure class="highlight crmsh"><table><tr><td class="code"><pre><code class="hljs crmsh">service redisd <span class="hljs-literal">start</span><br></code></pre></td></tr></table></figure>
+
+<p>关闭：</p>
+<p>方法1：</p>
+<figure class="highlight arduino"><table><tr><td class="code"><pre><code class="hljs arduino">service redisd <span class="hljs-built_in">stop</span><br></code></pre></td></tr></table></figure>
+
+<p>方法2：redis-cli SHUTDOWN</p>
+<h2 id="-4"><a href="#-4" class="headerlink" title=""></a></h2><h2 id="三、参考资料"><a href="#三、参考资料" class="headerlink" title="三、参考资料"></a>三、参考资料</h2><p>1、<a target="_blank" rel="noopener" href="http://blog.csdn.net/zc474235918/article/details/50974483">http://blog.csdn.net/zc474235918/article/details/50974483</a></p>
+<p>2、<a target="_blank" rel="noopener" href="http://blog.csdn.net/gxw19874/article/details/51992125">http://blog.csdn.net/gxw19874/article/details/51992125</a></p>
+<p>如果出现如下问题：</p>
+<figure class="highlight arduino"><table><tr><td class="code"><pre><code class="hljs arduino">[root@iZwz991stxdwj560bfmadtZ ~]<span class="hljs-meta"># service redisd start</span><br>/var/<span class="hljs-built_in">run</span>/redis_6379.pid <span class="hljs-built_in">exists</span>, <span class="hljs-built_in">process</span> is already <span class="hljs-built_in">running</span> <span class="hljs-keyword">or</span> crashed<br></code></pre></td></tr></table></figure>
+
+<p> 可参考资料：<a target="_blank" rel="noopener" href="http://blog.csdn.net/luozhonghua2014/article/details/54649295">http://blog.csdn.net/luozhonghua2014/article/details/54649295</a></p>
+
+    </div>
+</div>
+<style>
+    #noneimg img {
+        display: none;
+        z-index: 109;
+        width: 600px !important;
+        border-radius: 0px;
+        position: fixed;
+        box-shadow: 0 0 0px #c3c3c300 !important;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        margin: auto !important;
+    }
+
+    @media screen and (max-width:600px) {
+        #noneimg img {
+            width: 88%
+        }
+    }
+</style>
+<script>
+    $(function () { $('#article').click(function (e) { if (e.target.tagName == "IMG") { if ($('#nonediv').length == 0) { let MImg = `<div id='noneimg'><img src='${e.target.currentSrc}'></div>`; let MDiv = "<div id='nonediv' style='cursor: pointer;display: none; position: fixed;left: 0;top: 0; right: 0;bottom: 0;background-color: #333;opacity:0.5;z-index: 108;'></div>"; $('#article').append(MDiv); $('#article').append(MImg); $("#nonediv").fadeIn("slow"); $("#noneimg img").fadeIn("slow") } } else { if ($('#nonediv').length !== 0) { $("#noneimg ").fadeOut("slow"); $("#nonediv").fadeOut("slow"); setTimeout(function () { $('#nonediv').remove(); $('#noneimg').remove() }, 500) } } }); $('.article-content').addClass('content-move') });
+</script>
+<div class="Last-Next">
+    
+    <a href="/2021/03/02/Centos7%E6%9B%B4%E6%8D%A2yum%E6%BA%90%E5%92%8C%E5%AE%89%E8%A3%85EPEL%E6%BA%90%E5%8F%8A%E7%9B%B8%E5%85%B3%E6%8A%A5%E9%94%99%E5%A4%84%E7%90%86/">
+        <div class="last">
+            <span>上一篇</span>
+            <p>Centos7更换yum源和安装EPEL源及相关报错处理</p>
+        </div>
+    </a>
+    
+
+    
+    <a href="/2021/03/02/Centos7%E5%BC%80%E6%94%BE%E5%8F%8A%E6%9F%A5%E7%9C%8B%E7%AB%AF%E5%8F%A3/">
+        <div class="next">
+            <span>下一篇</span>
+            <p>Centos7开放及查看端口</p>
+        </div>
+    </a>
+    
+</div>
+		
+<link rel="stylesheet" href="/css/food.css">
+
+<div class="footer">
+	<div class="Copyright">
+		©2021 By XiaoBei. <a
+			style="text-decoration: none;display: contents; color: #898F9F;"
+			target="_blank" rel="noopener" href="https://github.com/LaoJiuGua/">Github</a>
+	</div>
+	<div class="contact">
+		
+		<a target="_blank" rel="noopener" href="https://github.com/LaoJiuGua">
+			<img src="https://cdn.jsdelivr.net/gh/duogongneng/MyBlogImg/imggithub.png" alt="Quiet主题">
+		</a>
+		
+	</div>
+</div>
+
+<script src="/js/jquery.min.js"></script>
+
+
+<script src="/js/gotop.js"></script>
+
+
+<style type="text/css">
+    @media screen and (min-width: 600px) {
+        .goTop>span {
+            display: block;
+            border-radius: 50%;
+            width: 66px;
+            height: 66px;
+            cursor: pointer;
+            opacity: 0.8;
+            background: rgba(18, 24, 58, 0.06);
+            text-align: center;
+            border: 1px solid rgba(18, 24, 58, 0.06);
+
+            transition: border .5s;
+            -moz-transition: border .5s;
+            /* Firefox 4 */
+            -webkit-transition: border .5s;
+            /* Safari 和 Chrome */
+            -o-transition: border .5s;
+            /* Opera */
+        }
+
+        .goTop>span:hover {
+            border: 1px solid #6680B3;
+        }
+
+
+        .goTop {
+            position: fixed;
+            right: 30px;
+            bottom: 80px;
+        }
+
+        .goTop>span>svg {
+            width: 30px;
+            height: 30px;
+            margin-top: 17.5px;
+            opacity: 0.7;
+        }
+
+    }
+
+    @media screen and (max-width: 600px) {
+        .goTop {
+            display: none;
+        }
+    }
+</style>
+<div class="goTop" id="js-go_top">
+    <span>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+            <g>
+                <path d="M13 12v8h-2v-8H4l8-8 8 8z"></path>
+            </g>
+        </svg>
+    </span>
+</div>
+<script>
+    $('#js-go_top').gotoTop({ offset: 500, speed: 300, animationShow: { 'transform': 'translate(0,0)', 'transition': 'transform .5s ease-in-out' }, animationHide: { 'transform': 'translate(100px,0)', 'transition': 'transform .5s ease-in-out' } });
+</script>
+<script>
+	console.log('\n %c Hexo-Quiet 主题 %c https://github.com/QiaoBug/hexo-theme-quiet \n', 'color: #fadfa3; background: #030307; padding:5px 0;', 'background: #fadfa3; padding:5px 0;')
+</script>
+	</body>
+
+</html>
